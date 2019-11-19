@@ -3,11 +3,10 @@
 // Adafruit NeoPixel library
 
 #include <Adafruit_NeoPixel.h>
-#include<Wire.h>
+#include <Wire.h>
 #ifdef __AVR__
 #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
-
 
 // Which pin on the Arduino is connected to the NeoPixels?
 #define PIN 5 // On Trinket or Gemma, suggest changing this to 1
@@ -29,7 +28,6 @@ bool debugmode = true;
 const byte ledPin = 13;
 const byte interruptPin = 2;
 volatile byte state = LOW;
-
 
 // When setting up the NeoPixel library, we tell it how many pixels,
 // and which pin to use to send signals. Note that for older NeoPixel
@@ -91,7 +89,7 @@ void loop()
   blinkLed();
 
   readgyro();
-
+  canvertGyroData();
   if (debugmode)
   {
     printDebug();
@@ -100,7 +98,7 @@ void loop()
 void colorWipe(uint32_t color, int wait)
 {
   for (int i = 0; i < pixels.numPixels(); i++)
-  { // For each pixel in strip...
+  {                                 // For each pixel in strip...
     pixels.setPixelColor(i, color); //  Set pixel's color (in RAM)
     pixels.show();                  //  Update strip to match
     delay(wait);                    //  Pause for a moment
@@ -166,16 +164,21 @@ void readgyro()
 void printDebug()
 {
   Serial.print("Accelerometer: ");
-  Serial.print("X = "); Serial.print(AcX);
-  Serial.print(" | Y = "); Serial.print(AcY);
-  Serial.print(" | Z = "); Serial.println(AcZ);
+  Serial.print("X = ");
+  Serial.print(AcX);
+  Serial.print(" | Y = ");
+  Serial.print(AcY);
+  Serial.print(" | Z = ");
+  Serial.println(AcZ);
 
   Serial.print("Gyroscope: ");
-  Serial.print("X = "); Serial.print(GyX);
-  Serial.print(" | Y = "); Serial.print(GyY);
-  Serial.print(" | Z = "); Serial.println(GyZ);
+  Serial.print("X = ");
+  Serial.print(GyX);
+  Serial.print(" | Y = ");
+  Serial.print(GyY);
+  Serial.print(" | Z = ");
+  Serial.println(GyZ);
   Serial.println(" ");
-
 }
 
 void canvertGyroData()
@@ -183,8 +186,11 @@ void canvertGyroData()
   //Serial.print("Accelerometer: ");
   //Serial.print("X = "); Serial.print(AcX);
   //Serial.print(" | Y = "); Serial.print(AcY);
-  //Serial.print(" | Z = "); Serial.println(AcZ);
 
+  // here we check if the scooter start to stoping.
+  //blinkLed();
+  
+  
   //Serial.print("Gyroscope: ");
   //Serial.print("X = "); Serial.print(GyX);
   //Serial.print(" | Y = "); Serial.print(GyY);
@@ -200,7 +206,6 @@ void canvertGyroData()
   }
 }
 
-
 // Theater-marquee-style chasing lights. Pass in a color (32-bit value,
 // a la strip.Color(r,g,b) as mentioned above), and a delay time (in ms)
 // between frames.
@@ -209,7 +214,7 @@ void theaterChase(uint32_t color, int wait)
   for (int a = 0; a < 10; a++)
   { // Repeat 10 times...
     for (int b = 0; b < 3; b++)
-    { //  'b' counts from 0 to 2...
+    {                 //  'b' counts from 0 to 2...
       pixels.clear(); //   Set all pixels in RAM to 0 (off)
       // 'c' counts up from 'b' to end of strip in steps of 3...
       for (int c = b; c < pixels.numPixels(); c += 3)
@@ -256,7 +261,7 @@ void theaterChaseRainbow(int wait)
   for (int a = 0; a < 30; a++)
   { // Repeat 30 times...
     for (int b = 0; b < 3; b++)
-    { //  'b' counts from 0 to 2...
+    {                 //  'b' counts from 0 to 2...
       pixels.clear(); // Set all pixel colors to 'off'
       // 'c' counts up from 'b' to end of strip in increments of 3...
       for (int c = b; c < pixels.numPixels(); c += 3)
